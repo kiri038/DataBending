@@ -1,69 +1,59 @@
-PImage originalImg; // Store the original image
+int r = color(255, 0, 0);
+int g = color(0, 255, 0);
+int b = color(0, 0, 255);
+int y = color(255, 255, 0);
+int w = color(255, 255, 255);
+int black = color(0);
+boolean ib = true, water = true;
+int ibX, ibY, ibA, ibS;
+
 PImage img;
+PImage backgrnd;
 float corruptionRate = 0.1; // Initial corruption rate
-CustomSlider corruptionSlider; // Declare the slider as a global variable
+CustomSlider corruptionSlider;
 
 void setup() {
-  size(2388,912); //add the actual dimensions of your image
-  originalImg = loadImage("your_image.jpg"); // Replace with the image's file path
-  img = createImage(originalImg.width, originalImg.height, RGB); // Create a copy of the original image
-  img.copy(originalImg, 0, 0, originalImg.width, originalImg.height, 0, 0, img.width, img.height);
-  img.loadPixels();
-
-  // Create a slider to control the corruption rate
+  size(1920, 1080);
+  img = loadImage("pgr sun and bloody sea.jpg");
+  frameRate(25);
+  backgrnd = loadImage("pgr sun and bloody sea.jpg");
+  background(0);
+  backgrnd.loadPixels();
   corruptionSlider = new CustomSlider(width / 2 - 100, height - 50, 200, 20, 0, 1);
   corruptionSlider.setValue(corruptionRate);
 }
 
+
 void draw() {
-  background(255);
-
-  // Display the image
-  image(img, 0, 0, width, height);
-
-  // Update the slider's position based on the mouse
   corruptionSlider.update();
-
-  // Display the slider
   corruptionSlider.display();
-
   fill(0);
-  text("Corruption Rate", width / 2 - 80, height - 60);
   float newCorruptionRate = corruptionSlider.getValue();
-  text(newCorruptionRate, width / 2 + 120, height - 60);
 
-  // Check if the corruption rate has changed
   if (newCorruptionRate != corruptionRate) {
-    // Apply data corruption based on the slider value
-    dataCorruption(img, newCorruptionRate);
-    corruptionRate = newCorruptionRate; // Update the corruption rate
+    corruptionRate = newCorruptionRate;
   }
-}
+  if (water) {
+    if (frameCount % 9  ==0) {//slow down the flicker
+      for (int i = 1250000; i< 2000000; i++) {
+        //look at these pixels which are the water and for the shiny ones make them flicker
 
-void mousePressed() {
-  // Call the mousePressed method of the slider
-  corruptionSlider.mousePressed();
-}
+        color c = backgrnd.pixels[i];
+        float r = red(c);
+        float g = green(c);
+        float b = blue(c);
+        float a = alpha(c);
 
-void mouseReleased() {
-  // Call the mouseReleased method of the slider
-  corruptionSlider.mouseReleased();
-}
-
-void dataCorruption(PImage img, float rate) {
-  img.loadPixels();
-
-  for (int i = 0; i < img.pixels.length; i++) {
-    // Apply data corruption with a rate determined by the slider
-    if (random(1) < rate) {
-      img.pixels[i] = color(random(255), random(255), random(255));
-    } else {
-      // Restore the original pixel value from originalImg
-      int x = i % img.width;
-      int y = i / img.width;
-      img.pixels[i] = originalImg.get(x, y);
+        if (r >100 && g > 20 && b>80 ) {
+          backgrnd.pixels[i] = color((int) random(127, 230), (int) random(127, 230), (int) random(50, 255), 0);
+          // backgrnd.pixels[i] = color(r,g,b,random(255));
+        }
+      }
     }
+  } else {
+    backgrnd = loadImage("pgr sun and bloody sea.jpg");
   }
 
-  img.updatePixels();
+  backgrnd.updatePixels();
+  image(backgrnd, 0, 0, width, height);
 }
