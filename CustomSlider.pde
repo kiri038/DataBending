@@ -6,7 +6,7 @@ class CustomSlider {
 
   CustomSlider(float x, float y, float w, float h, float minValue, float maxValue) {
     this.x = x;
-    this.y = y;s
+    this.y = y;
     this.w = w;
     this.h = h;
     this.minValue = minValue;

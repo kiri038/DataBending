@@ -46,7 +46,6 @@ void draw() {
 
         if (r >100 && g > 20 && b>80 ) {
           backgrnd.pixels[i] = color((int) random(127, 230), (int) random(127, 230), (int) random(50, 255), 0);
-          // backgrnd.pixels[i] = color(r,g,b,random(255));
         }
       }
     }
