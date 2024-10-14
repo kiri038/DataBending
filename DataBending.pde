@@ -29,13 +29,6 @@ void draw() {
   background(0);
   image(img, 0, 0, width, height);
   
-    pushMatrix();
-    imageMode(CORNER);
-    rotate(270);
-    translate(-40,25);
-    image(img, 0, 0);
-    popMatrix();
-
   if (water) {
     //if (frameCount % 9  ==0) {//slow down the flicker
     for (int i = 1150000; i< 2000000; i++) {
@@ -54,7 +47,6 @@ void draw() {
     img = loadImage("pgr sun and bloody see.jpg");
   }
 
-
   corruptionSlider.update();
   corruptionSlider.display();
 
@@ -62,6 +54,13 @@ void draw() {
   text("Corruption Rate", width / 2 - 80, height - 60);
   float newCorruptionRate = corruptionSlider.getValue();
   text(newCorruptionRate, width / 2 + 120, height - 60);
+
+    pushMatrix();
+    imageMode(CORNER);
+    rotate(270);
+    translate(-40,25);
+    image(img, 0, 0);
+    popMatrix();
 
   if (newCorruptionRate != corruptionRate) {
     dataCorruption(img, newCorruptionRate);
